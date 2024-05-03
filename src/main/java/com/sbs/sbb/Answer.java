@@ -20,6 +20,8 @@ public class Answer {
     private LocalDateTime createDate;
 
 //    private Integer qusetionId;
-    @ManyToOne                                              // Question 하나(One)에 여러개 Answer(Many)
+//    ManyToOne은 필수로 작성
+//    Question 하나(One)에 여러개 Answer(Many)
+    @ManyToOne
     private Question question;
 }

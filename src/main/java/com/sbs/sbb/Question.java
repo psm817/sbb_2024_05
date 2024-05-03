@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -21,4 +22,11 @@ public class Question {
     private String content;
 
     private LocalDateTime createDate;
+
+//  mappedBy에 적힌 question은 Answer에 있는 question과 이름이 같아야한다.
+//  CascadeType.REMOVE를 하면 Question을 삭제할 때 답변도 함께 삭제된다.
+//  OneToMany는 테이블의 컬럼으로 생성되지 않는다.
+//  OneToMany는 선택적이다.
+    @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
+    private List<Answer> answerList;
 }
