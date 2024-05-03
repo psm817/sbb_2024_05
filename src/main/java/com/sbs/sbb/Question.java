@@ -14,10 +14,10 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.IDENTITY)         // auto_increment
     private Integer id;
 
-    @Column(length = 200)                                       // VARCHAR(200)
+    @Column(length = 200)                                       // VARCHAR(200) 타입
     private String subject;
 
-    @Column(columnDefinition = "TEXT")                          // TEXT
+    @Column(columnDefinition = "TEXT")                          // TEXT 타입
     private String content;
 
     private LocalDateTime createDate;
