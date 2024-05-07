@@ -1,21 +1,28 @@
 package com.sbs.sbb;
 
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
+@Transactional                  // Transactional 어노테이션을 사용하면 자동으로 Rollback이 적용
+@Rollback                       // Rollback 어노테이션을 사용하면 실제 DB에 적용되지 않음
 class SbbApplicationTests {
 	@Autowired
 	private QuestionRepository questionRepository;
 
 	@Test
 	void testJpa() {
+        // 데이터 추가
+        // insert into question set ~~ 과 같은 역할
 //		Question q1 = new Question();
 //		q1.setSubject("sbb가 무엇인가요?");
 //		q1.setContent("sbb에 대해서 알고 싶습니다.");
@@ -62,11 +69,23 @@ class SbbApplicationTests {
 
         // 데이터 수정하기
         // Optional을 사용했기 때문에 oq.get()으로 한 번 더 가져와야한다.
+        // findById(1)을 통해 id가 1인 question을 가져오고, 가져온 question의 값을 변경
+        // UPDATE question SET subject = '수정된 제목' WHERE id = 1 과 같은 역할
+//        Optional<Question> oq = this.questionRepository.findById(1);
+//        assertTrue(oq.isPresent());
+//        Question q = oq.get();
+//        q.setSubject("수정된 제목");
+//        this.questionRepository.save(q);
+
+        // 데이터 삭제하기
+        // findById(1)을 통해 id가 1인 question을 가져오고, 가져온 question을 삭제
+        // DELETE FROM question WHERE id = 1 와 같은 역할
+        assertEquals(2, this.questionRepository.count());
         Optional<Question> oq = this.questionRepository.findById(1);
         assertTrue(oq.isPresent());
         Question q = oq.get();
-        q.setSubject("수정된 제목");
-        this.questionRepository.save(q);
+        this.questionRepository.delete(q);
+        assertEquals(1, this.questionRepository.count());
 	}
 
 }
