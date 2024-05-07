@@ -92,15 +92,22 @@ class SbbApplicationTests {
         // 답변 저장하기
         // Autowired를 통해 answerRepository 객체를 생성
         // INSERT INTO answer SET ~~ 과 같은 역할
-        Optional<Question> oq = this.questionRepository.findById(2);
-        assertTrue(oq.isPresent());
-        Question q = oq.get();
+//        Optional<Question> oq = this.questionRepository.findById(2);
+//        assertTrue(oq.isPresent());
+//        Question q = oq.get();
+//
+//        Answer a = new Answer();
+//        a.setContent("네 자동으로 생성됩니다.");
+//        a.setQuestion(q);  // 어떤 질문의 답변인지 알기위해서 Question 객체가 필요하다.
+//        a.setCreateDate(LocalDateTime.now());
+//        this.answerRepository.save(a);
 
-        Answer a = new Answer();
-        a.setContent("네 자동으로 생성됩니다.");
-        a.setQuestion(q);  // 어떤 질문의 답변인지 알기위해서 Question 객체가 필요하다.
-        a.setCreateDate(LocalDateTime.now());
-        this.answerRepository.save(a);
+        // 답변 조회하기
+        // left join을 활용하여 조회한 결과와 같음.
+        Optional<Answer> oa = this.answerRepository.findById(1);
+        assertTrue(oa.isPresent());
+        Answer a = oa.get();
+        assertEquals(2, a.getQuestion().getId());
 	}
 
 }
