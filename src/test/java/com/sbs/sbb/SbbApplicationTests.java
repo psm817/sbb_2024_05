@@ -13,11 +13,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
-@Transactional                  // Transactional 어노테이션을 사용하면 자동으로 Rollback이 적용
-@Rollback                       // Rollback 어노테이션을 사용하면 실제 DB에 적용되지 않음
+//@Transactional                  // Transactional 어노테이션을 사용하면 자동으로 Rollback이 적용
+//@Rollback                       // Rollback 어노테이션을 사용하면 실제 DB에 적용되지 않음
 class SbbApplicationTests {
 	@Autowired
 	private QuestionRepository questionRepository;
+    @Autowired
+    private AnswerRepository answerRepository;
 
 	@Test
 	void testJpa() {
@@ -80,12 +82,25 @@ class SbbApplicationTests {
         // 데이터 삭제하기
         // findById(1)을 통해 id가 1인 question을 가져오고, 가져온 question을 삭제
         // DELETE FROM question WHERE id = 1 와 같은 역할
-        assertEquals(2, this.questionRepository.count());
-        Optional<Question> oq = this.questionRepository.findById(1);
+//        assertEquals(2, this.questionRepository.count());
+//        Optional<Question> oq = this.questionRepository.findById(1);
+//        assertTrue(oq.isPresent());
+//        Question q = oq.get();
+//        this.questionRepository.delete(q);
+//        assertEquals(1, this.questionRepository.count());
+
+        // 답변 저장하기
+        // Autowired를 통해 answerRepository 객체를 생성
+        // INSERT INTO answer SET ~~ 과 같은 역할
+        Optional<Question> oq = this.questionRepository.findById(2);
         assertTrue(oq.isPresent());
         Question q = oq.get();
-        this.questionRepository.delete(q);
-        assertEquals(1, this.questionRepository.count());
+
+        Answer a = new Answer();
+        a.setContent("네 자동으로 생성됩니다.");
+        a.setQuestion(q);  // 어떤 질문의 답변인지 알기위해서 Question 객체가 필요하다.
+        a.setCreateDate(LocalDateTime.now());
+        this.answerRepository.save(a);
 	}
 
 }
