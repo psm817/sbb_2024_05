@@ -48,7 +48,13 @@ class SbbApplicationTests {
 		// findBySubject
 		// Optional을 사용하지 않고, findBySubject 메서드는 QuestionRepository에서 추가하면 된다.
 		// SELECT * FROM question WHERE subject = 'sbb가 무엇인가요?' 와 같은 결과
-		Question q = this.questionRepository.findBySubject("sbb가 무엇인가요?");
+//		Question q = this.questionRepository.findBySubject("sbb가 무엇인가요?");
+//		assertEquals(1, q.getId());
+
+		// findBySubjectAndContent
+		// SELECT * FROM question WHERE subject = 'sbb가 무엇인가요?' AND content = 'sbb에 대해서 알고 싶습니다.' 와 같은 결과
+		Question q = this.questionRepository.findBySubjectAndContent(
+				"sbb가 무엇인가요?", "sbb에 대해서 알고 싶습니다.");
 		assertEquals(1, q.getId());
 	}
 
