@@ -4,7 +4,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 class SbbApplicationTests {
@@ -53,9 +56,17 @@ class SbbApplicationTests {
 
 		// findBySubjectAndContent
 		// SELECT * FROM question WHERE subject = 'sbb가 무엇인가요?' AND content = 'sbb에 대해서 알고 싶습니다.' 와 같은 결과
-		Question q = this.questionRepository.findBySubjectAndContent(
-				"sbb가 무엇인가요?", "sbb에 대해서 알고 싶습니다.");
-		assertEquals(1, q.getId());
+//		Question q = this.questionRepository.findBySubjectAndContent(
+//				"sbb가 무엇인가요?", "sbb에 대해서 알고 싶습니다.");
+//		assertEquals(1, q.getId());
+
+        // 데이터 수정하기
+        // Optional을 사용했기 때문에 oq.get()으로 한 번 더 가져와야한다.
+        Optional<Question> oq = this.questionRepository.findById(1);
+        assertTrue(oq.isPresent());
+        Question q = oq.get();
+        q.setSubject("수정된 제목");
+        this.questionRepository.save(q);
 	}
 
 }
