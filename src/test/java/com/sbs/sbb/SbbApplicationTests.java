@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -27,11 +27,25 @@ class SbbApplicationTests {
 //		q2.setCreateDate(LocalDateTime.now());
 //		this.questionRepository.save(q2);  // 두번째 질문 저장
 
-		List<Question> all = this.questionRepository.findAll();
-		assertEquals(2, all.size());
+		// findAll
+		// expected 기댓값에 맞지 않으면 테스트 실패처리가 된다.
+		// SELECT * FROM question 과 같은 결과
+//		List<Question> all = this.questionRepository.findAll();
+//		assertEquals(2, all.size());
+//
+//		Question q = all.get(0);
+//		assertEquals("sbb가 무엇인가요?", q.getSubject());
 
-		Question q = all.get(0);
-		assertEquals("sbb가 무엇인가요?", q.getSubject());
+		// findById
+		// Optional은 무조건 0 또는 1이다.
+		// SELECT * FROM question WHERE id = 1 과 같은 결과
+		// Optional을 사용하면 우아한 처리가 가능한데, 우아한 처리란 null safe를 의미
+		// nullpointerException이 있을 때 안전한 처리가 가능하다는 뜻
+		Optional<Question> oq = this.questionRepository.findById(1);
+		if(oq.isPresent()) {
+			Question q = oq.get();
+			assertEquals("sbb가 무엇인가요?", q.getSubject());
+		}
 	}
 
 }
