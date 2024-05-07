@@ -4,8 +4,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
@@ -41,11 +39,17 @@ class SbbApplicationTests {
 		// SELECT * FROM question WHERE id = 1 과 같은 결과
 		// Optional을 사용하면 우아한 처리가 가능한데, 우아한 처리란 null safe를 의미
 		// nullpointerException이 있을 때 안전한 처리가 가능하다는 뜻
-		Optional<Question> oq = this.questionRepository.findById(1);
-		if(oq.isPresent()) {
-			Question q = oq.get();
-			assertEquals("sbb가 무엇인가요?", q.getSubject());
-		}
+//		Optional<Question> oq = this.questionRepository.findById(1);
+//		if(oq.isPresent()) {
+//			Question q = oq.get();
+//			assertEquals("sbb가 무엇인가요?", q.getSubject());
+//		}
+
+		// findBySubject
+		// Optional을 사용하지 않고, findBySubject 메서드는 QuestionRepository에서 추가하면 된다.
+		// SELECT * FROM question WHERE subject = 'sbb가 무엇인가요?' 와 같은 결과
+		Question q = this.questionRepository.findBySubject("sbb가 무엇인가요?");
+		assertEquals(1, q.getId());
 	}
 
 }
