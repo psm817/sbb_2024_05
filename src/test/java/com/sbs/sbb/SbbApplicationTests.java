@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -21,6 +22,7 @@ class SbbApplicationTests {
     @Autowired
     private AnswerRepository answerRepository;
 
+    @Transactional
 	@Test
 	void testJpa() {
         // 데이터 추가
@@ -104,10 +106,22 @@ class SbbApplicationTests {
 
         // 답변 조회하기
         // left join을 활용하여 조회한 결과와 같음.
-        Optional<Answer> oa = this.answerRepository.findById(1);
-        assertTrue(oa.isPresent());
-        Answer a = oa.get();
-        assertEquals(2, a.getQuestion().getId());
+//        Optional<Answer> oa = this.answerRepository.findById(1);
+//        assertTrue(oa.isPresent());
+//        Answer a = oa.get();
+//        assertEquals(2, a.getQuestion().getId());
+
+        // 질문을 통해 답변을 조회하기
+        // id가 2인 질문을 찾고, 답변은 여러개일 수도 있기 떄문에 List로 답변을 찾는다.
+        // id가 2인 질문을 찾고, 해당 세션이 끝나기 때문에 이럴 경우는 @Transactional 어노테이션을 사용한다.
+        Optional<Question> oq = this.questionRepository.findById(2);
+        assertTrue(oq.isPresent());
+        Question q = oq.get();
+
+        List<Answer> answerList = q.getAnswerList();
+
+        assertEquals(1, answerList.size());
+        assertEquals("네 자동으로 생성됩니다.", answerList.get(0).getContent());
 	}
 
 }
