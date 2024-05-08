@@ -14,7 +14,7 @@ public class QuestionController {
 
     @GetMapping("/question/list")
     public String list(Model model) {
-        List<Question> questionList = this.questionService.findAll();
+        List<Question> questionList = this.questionService.getList();
         // html로 넘겨주는 attribute가 questionList이다.
         model.addAttribute("questionList", questionList);
 
