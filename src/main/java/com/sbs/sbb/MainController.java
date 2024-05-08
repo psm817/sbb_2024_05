@@ -11,4 +11,10 @@ public class MainController {
     public String index() {
         return "안녕하세요!!!";
     }
+
+    @GetMapping("/")
+    public String root() {
+        // localhost:8090으로 접속해도 localhost:8090/question/list 로 리다이렉션 가능
+        return "redirect:/question/list";
+    }
 }
