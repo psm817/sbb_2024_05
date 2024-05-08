@@ -5,7 +5,7 @@
 </h2>
 
 <!--입력 폼 만들기-->
-<form action="/question/createTemp" method="POST">
+<form th:action="@{|/answer/create/${question.id}|}" method="POST">
     <div>
         <span>내용</span>
         <br>
