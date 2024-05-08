@@ -3,9 +3,7 @@ package com.sbs.sbb.Question;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,5 +28,12 @@ public class QuestionController {
         model.addAttribute("question", q);
 
         return "question_detail";               // return 값은 html 파일명
+    }
+
+    // 템플릿(question_detail.html)에서 받으면 전송완료가 되었다는 문자 출력
+    @PostMapping("/createTemp")
+    @ResponseBody
+    public String temp() {
+        return "전송완료";
     }
 }

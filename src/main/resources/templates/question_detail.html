@@ -3,3 +3,15 @@
     <div th:text="${question.subject}"></div>
     <div th:text="${question.content}"></div>
 </h2>
+
+<!--입력 폼 만들기-->
+<form action="/question/createTemp" method="POST">
+    <div>
+        <span>내용</span>
+        <br>
+        <textarea name="content" placeholder="내용" rows="5"></textarea>
+    </div>
+
+    <!--  type=submit을 하고 button을 누르면 action에서 말한 URL로 이동  -->
+    <button type="submit">답변등록</button>
+</form>
