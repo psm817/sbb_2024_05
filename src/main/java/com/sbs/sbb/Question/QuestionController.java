@@ -10,11 +10,11 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor                // 생성자를 통해 객체 생성하는 역할이랑 동일
 public class QuestionController {
-    private final QuestionRepository questionRepository;
+    private final QuestionService questionService;
 
     @GetMapping("/question/list")
     public String list(Model model) {
-        List<Question> questionList = this.questionRepository.findAll();
+        List<Question> questionList = this.questionService.findAll();
         // html로 넘겨주는 attribute가 questionList이다.
         model.addAttribute("questionList", questionList);
 
