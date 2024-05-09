@@ -23,6 +23,7 @@ public class AnswerController {
         // 답변 부모 질문 객체를 받아온다.
         Question q = this.questionService.getQuestion(id);
 
+        // question_detail.html에서 작성한 textarea 답변 내용을 서비스를 통해 생성
         Answer answer = this.answerService.create(q, content);
 
         return "redirect:/question/detail/%d".formatted(id);
