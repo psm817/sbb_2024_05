@@ -1,5 +1,6 @@
 package com.sbs.sbb.Question;
 
+import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,8 +31,17 @@ public class QuestionController {
         return "question_detail";               // return 값은 html 파일명
     }
 
+    // 질문 등록하기 버튼 눌렀을 때 URL 매핑
     @GetMapping("/create")
-    public String questionCreate() {
+    public String create() {
         return "question_form";
+    }
+
+    // 저장하기 버튼 눌렀을 때 URL 매핑
+    @PostMapping("/create")
+    public String questionCreate(@RequestParam(value="subject") String subject, @RequestParam(value="content") String content) {
+        Question q = this.questionService.create(subject, content);
+
+        return "redirect:/question/list";
     }
 }
