@@ -29,4 +29,9 @@ public class QuestionController {
 
         return "question_detail";               // return 값은 html 파일명
     }
+
+    @GetMapping("/create")
+    public String questionCreate() {
+        return "question_form";
+    }
 }
