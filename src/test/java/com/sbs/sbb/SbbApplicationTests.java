@@ -4,13 +4,19 @@ import com.sbs.sbb.Answer.Answer;
 import com.sbs.sbb.Answer.AnswerRepository;
 import com.sbs.sbb.Question.Question;
 import com.sbs.sbb.Question.QuestionRepository;
+import com.sbs.sbb.Question.QuestionService;
 import jakarta.transaction.Transactional;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -19,104 +25,193 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 //@Transactional                  // Transactional 어노테이션을 사용하면 자동으로 Rollback이 적용
 //@Rollback                       // Rollback 어노테이션을 사용하면 실제 DB에 적용되지 않음
 class SbbApplicationTests {
-	@Autowired
-	private QuestionRepository questionRepository;
+    @Autowired
+    private QuestionService questionService;
+    @Autowired
+    private QuestionRepository questionRepository;
     @Autowired
     private AnswerRepository answerRepository;
 
-    @Transactional
-	@Test
-	void testJpa() {
-        // 데이터 추가
-        // insert into question set ~~ 과 같은 역할
-//		Question q1 = new Question();
-//		q1.setSubject("sbb가 무엇인가요?");
-//		q1.setContent("sbb에 대해서 알고 싶습니다.");
-//		q1.setCreateDate(LocalDateTime.now());
-//		this.questionRepository.save(q1);  // 첫번째 질문 저장
-//
-//		Question q2 = new Question();
-//		q2.setSubject("스프링부트 모델 질문입니다.");
-//		q2.setContent("id는 자동으로 생성되나요?");
-//		q2.setCreateDate(LocalDateTime.now());
-//		this.questionRepository.save(q2);  // 두번째 질문 저장
+    @BeforeEach
+        // 아래 메서드는 각 테스트케이스가 실행되기 전에 실행된다.
+    void beforeEach() {
+        // 모든 데이터 삭제
+        answerRepository.deleteAll();
 
-		// findAll
-		// expected 기댓값에 맞지 않으면 테스트 실패처리가 된다.
-		// SELECT * FROM question 과 같은 결과
-//		List<Question> all = this.questionRepository.findAll();
-//		assertEquals(2, all.size());
-//
-//		Question q = all.get(0);
-//		assertEquals("sbb가 무엇인가요?", q.getSubject());
+        // 모든 데이터 삭제
+        questionRepository.deleteAll();
 
-		// findById
-		// Optional은 무조건 0 또는 1이다.
-		// SELECT * FROM question WHERE id = 1 과 같은 결과
-		// Optional을 사용하면 우아한 처리가 가능한데, 우아한 처리란 null safe를 의미
-		// nullpointerException이 있을 때 안전한 처리가 가능하다는 뜻
-//		Optional<Question> oq = this.questionRepository.findById(1);
-//		if(oq.isPresent()) {
-//			Question q = oq.get();
-//			assertEquals("sbb가 무엇인가요?", q.getSubject());
-//		}
 
-		// findBySubject
-		// Optional을 사용하지 않고, findBySubject 메서드는 QuestionRepository에서 추가하면 된다.
-		// SELECT * FROM question WHERE subject = 'sbb가 무엇인가요?' 와 같은 결과
-//		Question q = this.questionRepository.findBySubject("sbb가 무엇인가요?");
-//		assertEquals(1, q.getId());
+        // 질문 1개 생성
+        Question q1 = new Question();
+        q1.setSubject("sbb가 무엇인가요?");
+        q1.setContent("sbb에 대해서 알고 싶습니다.");
+        q1.setCreateDate(LocalDateTime.now());
+        questionRepository.save(q1);  // 첫번째 질문 저장
 
-		// findBySubjectAndContent
-		// SELECT * FROM question WHERE subject = 'sbb가 무엇인가요?' AND content = 'sbb에 대해서 알고 싶습니다.' 와 같은 결과
-//		Question q = this.questionRepository.findBySubjectAndContent(
-//				"sbb가 무엇인가요?", "sbb에 대해서 알고 싶습니다.");
-//		assertEquals(1, q.getId());
+        // 질문 1개 생성
+        Question q2 = new Question();
+        q2.setSubject("스프링부트 모델 질문입니다.");
+        q2.setContent("id는 자동으로 생성되나요?");
+        q2.setCreateDate(LocalDateTime.now());
+        questionRepository.save(q2);  // 두번째 질문 저장
+    }
 
-        // 데이터 수정하기
-        // Optional을 사용했기 때문에 oq.get()으로 한 번 더 가져와야한다.
-        // findById(1)을 통해 id가 1인 question을 가져오고, 가져온 question의 값을 변경
-        // UPDATE question SET subject = '수정된 제목' WHERE id = 1 과 같은 역할
-//        Optional<Question> oq = this.questionRepository.findById(1);
-//        assertTrue(oq.isPresent());
-//        Question q = oq.get();
-//        q.setSubject("수정된 제목");
-//        this.questionRepository.save(q);
+    @Test
+    @DisplayName("데이터 저장")
+    void t001() {
+        // 질문 1개 생성
+        Question q = new Question();
+        q.setSubject("세계에서 가장 부유한 국가가 어디인가요?");
+        q.setContent("알고 싶습니다.");
+        q.setCreateDate(LocalDateTime.now());
+        questionRepository.save(q);
 
-        // 데이터 삭제하기
-        // findById(1)을 통해 id가 1인 question을 가져오고, 가져온 question을 삭제
-        // DELETE FROM question WHERE id = 1 와 같은 역할
-//        assertEquals(2, this.questionRepository.count());
-//        Optional<Question> oq = this.questionRepository.findById(1);
-//        assertTrue(oq.isPresent());
-//        Question q = oq.get();
-//        this.questionRepository.delete(q);
-//        assertEquals(1, this.questionRepository.count());
+        assertEquals("세계에서 가장 부유한 국가가 어디인가요?", questionRepository.findById(3).get().getSubject());
+    }
 
-        // 답변 저장하기
-        // Autowired를 통해 answerRepository 객체를 생성
-        // INSERT INTO answer SET ~~ 과 같은 역할
-//        Optional<Question> oq = this.questionRepository.findById(2);
-//        assertTrue(oq.isPresent());
-//        Question q = oq.get();
-//
-//        Answer a = new Answer();
-//        a.setContent("네 자동으로 생성됩니다.");
-//        a.setQuestion(q);  // 어떤 질문의 답변인지 알기위해서 Question 객체가 필요하다.
-//        a.setCreateDate(LocalDateTime.now());
-//        this.answerRepository.save(a);
+    /*
+    SQL
+    SELECT * FROM question
+    */
+    @Test
+    @DisplayName("findAll")
+    void t002() {
+        List<Question> all = questionRepository.findAll();
+        assertEquals(2, all.size());
 
-        // 답변 조회하기
-        // left join을 활용하여 조회한 결과와 같음.
-//        Optional<Answer> oa = this.answerRepository.findById(1);
-//        assertTrue(oa.isPresent());
-//        Answer a = oa.get();
-//        assertEquals(2, a.getQuestion().getId());
+        Question q = all.get(0);
+        assertEquals("sbb가 무엇인가요?", q.getSubject());
+    }
 
-        // 질문을 통해 답변을 조회하기
-        // id가 2인 질문을 찾고, 답변은 여러개일 수도 있기 떄문에 List로 답변을 찾는다.
-        // id가 2인 질문을 찾고, 해당 세션이 끝나기 때문에 이럴 경우는 @Transactional 어노테이션을 사용한다.
-        Optional<Question> oq = this.questionRepository.findById(2);
+    /*
+    SQL
+    SELECT *
+    FROM question
+    WHERE id = 1
+    */
+    @Test
+    @DisplayName("findById")
+    void t003() {
+        Optional<Question> oq = questionRepository.findById(1);
+
+        if (oq.isPresent()) {
+            Question q = oq.get();
+            assertEquals("sbb가 무엇인가요?", q.getSubject());
+        }
+    }
+
+    /*
+    SQL
+    SELECT *
+    FROM question
+    WHERE subject = 'sbb가 무엇인가요?'
+    */
+    @Test
+    @DisplayName("findBySubject")
+    void t004() {
+        Question q = questionRepository.findBySubject("sbb가 무엇인가요?");
+        assertEquals(1, q.getId());
+    }
+
+    /*
+    SQL
+    SELECT *
+    FROM question
+    WHERE subject = 'sbb가 무엇인가요?'
+    AND content = 'sbb에 대해서 알고 싶습니다.'
+    */
+    @Test
+    @DisplayName("findBySubjectAndContent")
+    void t005() {
+        Question q = questionRepository.findBySubjectAndContent(
+                "sbb가 무엇인가요?", "sbb에 대해서 알고 싶습니다."
+        );
+        assertEquals(1, q.getId());
+    }
+
+    /*
+    SQL
+    UPDATE
+        question
+    SET
+        content = ?,
+        create_date = ?,
+        subject = ?
+    WHERE
+        id = ?
+    */
+    @Test
+    @DisplayName("데이터 수정하기")
+    void t007() {
+        Optional<Question> oq = questionRepository.findById(1);
+        assertTrue(oq.isPresent());
+        Question q = oq.get();
+        q.setSubject("수정된 제목");
+        questionRepository.save(q);
+    }
+
+    /*
+    SQL
+    DELETE
+    FROM
+        question
+    WHERE
+        id = ?
+    */
+    @Test
+    @DisplayName("데이터 삭제하기")
+    void t008() {
+        // questionRepository.count()
+        // SQL : SELECT COUNT(*) FROM question;
+        assertEquals(2, questionRepository.count());
+        Optional<Question> oq = questionRepository.findById(1);
+        assertTrue(oq.isPresent());
+        Question q = oq.get();
+        questionRepository.delete(q);
+        assertEquals(1, questionRepository.count());
+    }
+
+    @Test
+    @DisplayName("답변 데이터 생성 후 저장하기")
+    void t009() {
+        Optional<Question> oq = questionRepository.findById(2);
+        assertTrue(oq.isPresent());
+        Question q = oq.get();
+
+        /*
+        // v1
+        Optional<Question> oq = questionRepository.findById(2);
+        Question q = oq.get();
+        */
+
+        /*
+        // v2
+        Question q = questionRepository.findById(2).get();
+        */
+
+        Answer a = new Answer();
+        a.setContent("네 자동으로 생성됩니다.");
+        a.setQuestion(q);  // 어떤 질문의 답변인지 알기위해서 Question 객체가 필요하다.
+        a.setCreateDate(LocalDateTime.now());
+        answerRepository.save(a);
+    }
+
+    @Test
+    @DisplayName("답변 조회하기")
+    void t010() {
+        Optional<Answer> oa = answerRepository.findById(1);
+        assertTrue(oa.isPresent());
+        Answer a = oa.get();
+        assertEquals(2, a.getQuestion().getId());
+    }
+
+    @Transactional // 여기서의 트랜잭션의 역할 : 함수가 끝날 때까지 전화(DB와의)를 끊지 않음
+    @Rollback(false)
+    @Test
+    @DisplayName("질문에 달린 답변 찾기")
+    void t011() {
+        Optional<Question> oq = questionRepository.findById(2);
         assertTrue(oq.isPresent());
         Question q = oq.get();
 
@@ -124,6 +219,22 @@ class SbbApplicationTests {
 
         assertEquals(1, answerList.size());
         assertEquals("네 자동으로 생성됩니다.", answerList.get(0).getContent());
-	}
+    }
 
+    @Test
+    @DisplayName("대량 테스트 데이터 만들기")
+    void t012() {
+        for(int i = 1; i <= 300; i++) {
+            String subject = String.format("테스트 데이터입니다:[%03d]", i);
+            String content = "내용무";
+            this.questionService.create(subject, content);
+        }
+    }
+
+    @Test
+    @DisplayName("스트림 버전 데이터 밀어넣기")
+    void t013() {
+        IntStream.rangeClosed(3, 300)
+                .forEach(no -> questionService.create("테스트 제목입니다. %d".formatted(no), "테스트 내용입니다. %d".formatted(no)));
+    }
 }
