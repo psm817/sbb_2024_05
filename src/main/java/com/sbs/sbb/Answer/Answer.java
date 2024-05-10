@@ -9,20 +9,17 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@Entity                                                     // answer 테이블
+@Entity
 public class Answer {
-    @Id                                                     // Primary Key
-    @GeneratedValue(strategy = GenerationType.IDENTITY)     // auto_increment
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(columnDefinition = "TEXT")                      // TEXT 타입
+    @Column(columnDefinition = "TEXT")
     private String content;
 
     private LocalDateTime createDate;
 
-//    private Integer qusetionId;
-//    ManyToOne은 필수로 작성
-//    Question 하나(One)에 여러개 Answer(Many)
     @ManyToOne
     private Question question;
 }

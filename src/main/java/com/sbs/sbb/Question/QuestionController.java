@@ -1,16 +1,20 @@
 package com.sbs.sbb.Question;
 
-import jakarta.websocket.server.PathParam;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
-@RequestMapping("/question")            // 매핑이 모두 question 라는 접두어로 시작하면 RequestMapping 으로 설정
+@RequestMapping("/question")
 @Controller
-@RequiredArgsConstructor                // 생성자를 통해 객체 생성하는 역할이랑 동일
+@RequiredArgsConstructor
+//@Validated 컨트롤러에서는 생략 가능
 public class QuestionController {
     private final QuestionService questionService;
 
@@ -28,22 +32,18 @@ public class QuestionController {
 
         model.addAttribute("question", q);
 
-        return "question_detail";               // return 값은 html 파일명
+        return "question_detail";
     }
 
-    // 질문 등록하기 버튼 눌렀을 때 URL 매핑
     @GetMapping("/create")
     public String create() {
         return "question_form";
     }
 
-    // 저장하기 버튼 눌렀을 때 URL 매핑
     @PostMapping("/create")
-    public String questionCreate(QuestionForm questionForm) {
-        String subject = questionForm.getSubject();
-        String content = questionForm.getContent();
-
-        Question q = this.questionService.create(subject, content);
+    // QuestionForm 값을 바인딩할 때 유효성 체크를 해라!
+    public String questionCreate(@Valid QuestionForm questionForm) {
+        Question q = this.questionService.create(questionForm.getSubject(), questionForm.getContent());
 
         return "redirect:/question/list";
     }
