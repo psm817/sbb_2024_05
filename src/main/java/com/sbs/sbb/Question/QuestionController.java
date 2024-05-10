@@ -20,6 +20,7 @@ public class QuestionController {
 
     @GetMapping("/list")
     public String list(Model model, @RequestParam(value="page", defaultValue="0") int page) {
+        // URL : localhost:8090/question/list 뒤에 ?page=0 이 붙는다.
         Page<Question> paging = this.questionService.getList(page);
         model.addAttribute("paging", paging);
 
