@@ -22,6 +22,7 @@ public class SecurityConfig {
                         .requestMatchers(new AntPathRequestMatcher("/user/signup")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/user/login")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/style.css")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/")).permitAll()
                         // 로그인이 완료되면 나머지 페이지들도 열람 가능
                         .anyRequest().authenticated()
                 )
