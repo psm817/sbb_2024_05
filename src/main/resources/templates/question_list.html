@@ -8,17 +8,19 @@
                     <th>작성일시</th>
                 </tr>
             </thead>
+            <!--페이징 시작-->
             <tbody>
                 <tr th:each="question, loop : ${paging}">
-                    <td th:text="${loop.count}"></td>
+                    <td th:text="${paging.totalElements}"></td>
                     <td>
                         <a th:href="@{|/question/detail/${question.id}|}" th:text="${question.subject}"></a>
                     </td>
                     <td th:text="${#temporals.format(question.createDate, 'yyyy-MM-dd HH:mm')}"></td>
                 </tr>
             </tbody>
+            <!--페이징 끝-->
         </table>
-        <!-- 페이징 시작 -->
+        <!-- 페이지네이션 시작 -->
         <nav th:if="${!paging.isEmpty()}">
             <ul class="pagination justify-content-center">
                 <li class="page-item" th:classappend="${paging.number == 0} ? 'disabled'">
@@ -49,7 +51,7 @@
                 </li>
             </ul>
         </nav>
-        <!-- 페이징 끝-->
+        <!-- 페이지네이션 끝-->
         <a th:href="@{/question/create}" class="btn btn-primary">질문 등록하기</a>
     </div>
 </html>
