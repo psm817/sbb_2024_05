@@ -37,9 +37,11 @@ class SbbApplicationTests {
     void beforeEach() {
         // 모든 데이터 삭제
         answerRepository.deleteAll();
+        questionRepository.clearAutoIncrement();
 
         // 모든 데이터 삭제
         questionRepository.deleteAll();
+        questionRepository.clearAutoIncrement();
 
 
         // 질문 1개 생성
@@ -55,6 +57,13 @@ class SbbApplicationTests {
         q2.setContent("id는 자동으로 생성되나요?");
         q2.setCreateDate(LocalDateTime.now());
         questionRepository.save(q2);  // 두번째 질문 저장
+
+        // 답변 1개 생성
+        Answer a1 = new Answer();
+        a1.setContent("네, 자동으로 생성됩니다.");
+        a1.setQuestion(q2);
+        a1.setCreateDate(LocalDateTime.now());
+        answerRepository.save(a1);  // 첫번째 답변 저장
     }
 
     @Test
@@ -175,7 +184,7 @@ class SbbApplicationTests {
     @Test
     @DisplayName("답변 데이터 생성 후 저장하기")
     void t009() {
-        Optional<Question> oq = questionRepository.findById(2);
+        Optional<Question> oq = this.questionRepository.findById(2);
         assertTrue(oq.isPresent());
         Question q = oq.get();
 
