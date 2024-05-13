@@ -49,6 +49,7 @@ class SbbApplicationTests {
         questionRepository.clearAutoIncrement();
 
         // 모든 데이터 삭제(흔적 삭제 -> 다음번 INSERT를 할 때 id가 1번으로 설정)
+        userRepository.deleteAll();
         userRepository.clearAutoIncrement();
 
         // 회원 2명 생성
