@@ -5,6 +5,8 @@ import com.sbs.sbb.Answer.AnswerRepository;
 import com.sbs.sbb.Question.Question;
 import com.sbs.sbb.Question.QuestionRepository;
 import com.sbs.sbb.Question.QuestionService;
+import com.sbs.sbb.User.UserRepository;
+import com.sbs.sbb.User.UserService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -18,8 +20,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 //@Transactional                  // Transactional 어노테이션을 사용하면 자동으로 Rollback이 적용
@@ -28,21 +29,31 @@ class SbbApplicationTests {
     @Autowired
     private QuestionService questionService;
     @Autowired
+    private UserService userService;
+    @Autowired
     private QuestionRepository questionRepository;
     @Autowired
     private AnswerRepository answerRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @BeforeEach
         // 아래 메서드는 각 테스트케이스가 실행되기 전에 실행된다.
     void beforeEach() {
-        // 모든 데이터 삭제
+        // 모든 답변 데이터 삭제
         answerRepository.deleteAll();
         answerRepository.clearAutoIncrement();
 
-        // 모든 데이터 삭제
+        // 모든 질문 데이터 삭제
         questionRepository.deleteAll();
         questionRepository.clearAutoIncrement();
 
+        // 모든 데이터 삭제(흔적 삭제 -> 다음번 INSERT를 할 때 id가 1번으로 설정)
+        userRepository.clearAutoIncrement();
+
+        // 회원 2명 생성
+        userService.create("user1", "user1@test.com", "1234");
+        userService.create("user2", "user2@test.com", "1234");
 
         // 질문 1개 생성
         Question q1 = new Question();
