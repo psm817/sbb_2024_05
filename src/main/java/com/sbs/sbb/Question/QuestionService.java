@@ -1,6 +1,7 @@
 package com.sbs.sbb.Question;
 
-import com.sbs.sbb.DataNotException;
+import com.sbs.sbb.DataNotFoundException;
+import com.sbs.sbb.User.SiteUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,15 +25,16 @@ public class QuestionService {
 
     public Question getQuestion(Integer id) {
         Optional<Question> oq = this.questionRepository.findById(id);
-        if(oq.isEmpty()) throw new DataNotException("question not found");
+        if(oq.isEmpty()) throw new DataNotFoundException("question not found");
 
         return oq.get();
     }
 
-    public Question create(String subject, String content) {
+    public Question create(String subject, String content, SiteUser author) {
         Question q = new Question();
         q.setSubject(subject);
         q.setContent(content);
+        q.setAuthor(author);
         q.setCreateDate(LocalDateTime.now());
 
         this.questionRepository.save(q);
