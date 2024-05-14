@@ -14,7 +14,7 @@
                         <div class="mb-2">
                             <span th:if="${question.author != null}" th:text="'작성자 : ' + ${question.author.username}"></span>
                         </div>
-                        <div th:text="'작성일시 : ' + ${#temporals.format(question.createDate, 'yyyy-MM-dd HH:mm')}"></div>
+                        <div th:text="'최초 작성일 : ' + ${#temporals.format(question.createDate, 'yyyy-MM-dd HH:mm')}"></div>
                         <div style="margin-top: 7px;" th:if="${question.modifyDate != null}" th:text="'수정일시 : ' + ${#temporals.format(question.modifyDate, 'yyyy-MM-dd HH:mm')}"></div>
                     </div>
                 </div>
@@ -48,7 +48,7 @@
                         <div class="mb-2">
                             <span th:if="${answer.author != null}" th:text="'작성자 : ' + ${answer.author.username}"></span>
                         </div>
-                        <div th:text="'작성일시 : ' + ${#temporals.format(answer.createDate, 'yyyy-MM-dd HH:mm')}"></div>
+                        <div th:text="'최초 작성일 : ' + ${#temporals.format(answer.createDate, 'yyyy-MM-dd HH:mm')}"></div>
                         <div style="margin-top: 7px;" th:if="${answer.modifyDate != null}" th:text="'수정일시 : ' + ${#temporals.format(answer.modifyDate, 'yyyy-MM-dd HH:mm')}"></div>
                     </div>
                 </div>
