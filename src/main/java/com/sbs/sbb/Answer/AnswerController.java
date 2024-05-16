@@ -62,7 +62,7 @@ public class AnswerController {
 
         this.answerService.modify(answer, answerForm.getContent());
 
-        return String.format("redirect:/question/detail/%s", answer.getQuestion().getId());
+        return "redirect:/question/detail/%s".formatted(answer.getQuestion().getId());
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -90,7 +90,7 @@ public class AnswerController {
 
         this.answerService.delete(answer);
 
-        return String.format("redirect:/question/detail/%s", answer.getQuestion().getId());
+        return "redirect:/question/detail/%s".formatted(answer.getQuestion().getId());
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -101,6 +101,6 @@ public class AnswerController {
 
         this.answerService.vote(answer, siteUser);
 
-        return String.format("redirect:/question/detail/%s", answer.getQuestion().getId());
+        return "redirect:/question/detail/%s".formatted(answer.getQuestion().getId());
     }
 }

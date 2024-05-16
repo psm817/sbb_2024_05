@@ -81,7 +81,7 @@ public class QuestionController {
 
         this.questionService.modify(question, questionForm.getSubject(), questionForm.getContent());
 
-        return String.format("redirect:/question/detail/%s", id);
+        return "redirect:/question/detail/%s".formatted(id);
     }
 
     @PreAuthorize("isAuthenticated()")
