@@ -26,9 +26,10 @@ public class QuestionController {
     private final UserService userService;
 
     @GetMapping("/list")
-    public String list(Model model, @RequestParam(value="page", defaultValue="0") int page) {
+    public String list(Model model, @RequestParam(value="page", defaultValue="0") int page, @RequestParam(value = "kw", defaultValue = "") String kw) {
         // URL : localhost:8090/question/list 뒤에 ?page=0 이 붙는다.
-        Page<Question> paging = this.questionService.getList(page);
+        Page<Question> paging = this.questionService.getList(page, null);
+
         model.addAttribute("paging", paging);
 
         return "question_list";
