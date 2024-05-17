@@ -28,7 +28,15 @@ public class QuestionService {
 
     public Question getQuestion(Integer id) {
         Optional<Question> oq = questionRepository.findById(id);
-        if(oq.isEmpty()) throw new DataNotFoundException("question not found");
+
+        if(oq.isEmpty()) {
+            throw new DataNotFoundException("question not found");
+        }
+        else {
+            Question questionHit = oq.get();
+            questionHit.setHit(questionHit.getHit() + 1);
+            questionRepository.save(questionHit);
+        }
 
         return oq.get();
     }

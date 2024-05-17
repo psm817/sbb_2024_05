@@ -43,6 +43,9 @@ public class Question {
     @ManyToMany
     Set<SiteUser> voters = new LinkedHashSet<>();
 
+    @Column(columnDefinition = "Integer default 0", nullable = false)
+    private Integer hit;
+
     public void addVoter(SiteUser voter) {
         voters.add(voter);
     }
